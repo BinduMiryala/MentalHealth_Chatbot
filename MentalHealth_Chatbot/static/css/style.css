@@ -1,0 +1,29 @@
+.user-msg {
+    background-color: #cce5ff;
+    color: #003366;
+    float: right;
+    text-align: right;
+    border: 1.5px solid #444;
+    margin: 10px 0;
+    padding: 10px 15px;
+    border-radius: 20px;
+    display: inline-block;
+    max-width: 75%;
+    word-wrap: break-word;
+    clear: both;
+}
+
+.bot-msg {
+    background-color: #ffd6e0;
+    color: #800040;
+    float: left;
+    text-align: left;
+    border: 1.5px solid #444;
+    margin: 10px 0;
+    padding: 10px 15px;
+    border-radius: 20px;
+    display: inline-block;
+    max-width: 75%;
+    word-wrap: break-word;
+    clear: both;
+}

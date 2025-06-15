@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mental Health Chatbot</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body, html {
+      height: 100%;
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(to right, #e0c3fc, #8ec5fc);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .chat-container {
+      background: #ffffff;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      padding: 25px 30px;
+      width: 420px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    h2 {
+      color: #7d1b7e;
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 22px;
+    }
+
+    #chatbox {
+      height: 350px;
+      overflow-y: auto;
+      background: #fff1fc;
+      border: 1px solid #eee;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 15px;
+    }
+
+    .user-msg, .bot-msg {
+      margin: 8px 0;
+      padding: 10px 15px;
+      border-radius: 20px;
+      display: inline-block;
+      max-width: 75%;
+      word-wrap: break-word;
+      clear: both;
+    }
+
+    .user-msg {
+      background-color: #cce5ff;
+      color: #003366;
+      float: right;
+      text-align: right;
+    }
+
+    .bot-msg {
+      background-color: #ffc9d7;
+      color: #5a002b;
+      float: left;
+      text-align: left;
+    }
+
+    .input-container {
+      display: flex;
+      gap: 10px;
+    }
+
+    input[type="text"] {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    button {
+      background-color: #ff66a3;
+      border: none;
+      padding: 10px 15px;
+      color: white;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #cc3385;
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-container">
+    <h2>MindEase 🧘</h2>
+    <div id="chatbox"></div>
+    <div class="input-container">
+      <input type="text" id="userInput" placeholder="Type your feelings..." autofocus />
+      <button id="sendBtn">Send</button>
+    </div>
+  </div>
+
+  <script defer>
+    document.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("sendBtn").addEventListener("click", sendMessage);
+    });
+
+    async function sendMessage() {
+      const input = document.getElementById("userInput");
+      const userInput = input.value;
+
+      if (!userInput.trim()) return;
+
+      const chatbox = document.getElementById("chatbox");
+
+      const userMessage = document.createElement("div");
+      userMessage.className = "user-msg";
+      userMessage.innerText = userInput;
+      chatbox.appendChild(userMessage);
+
+      chatbox.scrollTop = chatbox.scrollHeight;
+
+      const response = await fetch("/get", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ msg: userInput })
+      });
+
+      const data = await response.json();
+
+      const botMessage = document.createElement("div");
+      botMessage.className = "bot-msg";
+      botMessage.innerText = data.response;
+      chatbox.appendChild(botMessage);
+
+      chatbox.scrollTop = chatbox.scrollHeight;
+      input.value = "";
+    }
+  </script>
+</body>
+</html>
